@@ -1,0 +1,111 @@
+- name: Terminate instances
+  hosts: localhost
+  tasks:
+    - name: Terminate instances that were previously launched
+      amazon.aws.ec2:
+        state: 'absent'
+        region: ap-south-1
+        instance_ids: "{{'i-0ad70ce23861ee5aa'}}"
+
+
+- hosts: localhost
+  remote_user: ec2-user
+  become: yes
+  tasks:
+    - name: creating new ec2 machine 
+      amazon.aws.ec2:
+          key_name: 24-04-22_keyLinux
+          instance_type: t2.micro
+          image: ami-0b5794cc5d751f003
+          region: ap-south-1
+         # wait: yes
+         # group: webserver
+          count: 1
+          vpc_subnet_id: subnet-044beed8b34b6a39f
+          assign_public_ip: yes
+
+
+
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  tasks:
+
+       - name: i am going to Install apache
+         yum:
+           name: httpd
+           state: present
+
+       - name: starting my apache
+         service:
+           name: httpd
+           state: started
+
+       - name: copy index.html
+         copy:
+           src: ./index.html
+           dest: /var/www/html/index.html
+           mode: '0777'
+
+----Tomcat-----
+
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  vars:
+   tomcat_port: 9090 
+  tasks:
+   - name: update repo
+     yum:
+      name: "*"  
+      state: latest
+
+   - name: Install java
+     yum:
+      name: java-1.8.0-openjdk
+      state: present
+
+   - name: Download tomcat  
+     get_url:
+      url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.zip
+      dest: /usr/local
+      mode: "0777"
+   
+   - name: Unzip   
+     unarchive:
+      src: /usr/local/bin/apache-tomcat-9.0.63.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: "0777"
+
+   - name: port  change
+     template:
+      src: ./server.xml.j2
+      dest: /usr/local/bin/apache-tomcat-9.0.63/conf/server.xml
+      mode: "0777" 
+
+   - name: start tomcat
+     shell: nohup /usr/local/bin/apache-tomcat-9.0.63/bin/startup.sh &
+
+   - name: Deploy application
+     copy:
+      src: ./sample.war
+      dest: /usr/local/bin/apache-tomcat-9.0.63/webapps  
+
+
+      -----Dockerfile---
+      
+FROM ubuntu
+RUN apt-get update -y
+RUN apt-get install openjdk-8-jdk -y
+RUN mkdir /opt/tomcat
+WORKDIR /opt/tomcat
+ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.63/bin/apache-tomcat-9.0.63.t>
+#ADD https://tomcat.apache.org/tomcat-5.5-doc/appdev/sample/sample.war .
+RUN tar -zxvf apache-tomcat-9.0.63.tar.gz
+RUN mv /opt/tomcat/apache-tomcat-9.0.63/* /opt/tomcat
+EXPOSE 8080
+COPY ./sample.war /opt/tomcat/webapps
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+
+

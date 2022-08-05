@@ -1,0 +1,66 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "myec2" {
+  ami = "ami-079b5e5b3971bd10d"
+  instance_type = "t2.micro"
+  key_name= "24-04-22_keyLinux"
+  vpc_security_group_ids = [aws_security_group.main_pvt.id]
+  tags = {
+    Name = "myec2"
+  }
+}
+
+resource "aws_security_group" "main"{
+
+ingress {
+    description      = ""
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = [ "0.0.0.0/0", ]
+      }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = [ "0.0.0.0/0", ]
+    }
+}
+
+resource "aws_security_group" "main_pvt"{
+ingress {
+    description      = ""
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = [ "0.0.0.0/0", ]
+      }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = [ "0.0.0.0/0", ]
+    }
+}
+
+#Vpc
+resource "aws_subnet" "example" {
+  vpc_id            = data.aws_vpc.selected.id
+  availability_zone = "us-west-2a"
+  cidr_block        = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
+}
+
+
