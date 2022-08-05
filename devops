@@ -1,221 +1,356 @@
+how to find version and path------sudo update-alternatives --config java
+error check tail 1000f logfile
+Nexus -- https://qiita.com/leechungkyu/items/86cad0396cf95b3b6973
 
-Ansible:
-Ansible is the most significant way to automate and configure apps and IT infrastructure. 
-Ansible is an open-source configuration management tool mainly designed for provisioning 
-and deploying applications using IaaC. Ansible is using idempotent.
+----------git----------2.32.0
+git config user.name "suresh"
+git config user.email "sureshwaran06@gmail.com"
 
-IAAc -Infrastructure as a code.
+add remote git
+git remote add origin https line
+git remote
+git push -u origin main
 
--For chef and puppet (groovy and ruby)
+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 -htmlfile
+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
+Suresh8520
+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
 
-Two mechanism
-1. push - from master -- Ansible(red hat)--control node -- agentless tool
-2. pull - from slave -- chef & puppet -- managed node
+merge git config two working in git
 
-salt stack -- both(push and pull)
+git config --global merge.tool vimdiff
+git config --global merge.conglictstyle diff3
+git config --global mergetool.prompt false
 
-https://docs.ansible.com
+git mergetool
 
-pre-requist: for control node and managed node.
+commends
+ctr ww curson top side navigate to each box
+:diffg LO to select Local box
+:diffg RE to select Remote box
+:diffg BA to select Base box
+:wqa 
 
-1.python
-2.control node not in windows os
-3.managed node any os
+rebase two different code module working one master brance two differ future branch
+git rebase which branch
+
+git cherry-pick commit-id  paticluar commit to master checkout
+
+Stash hide the file
+git stash
+git stash pop
+
+clone to copy the directory and file
+git clone http link
+
+fetch and fork
+
+Push password less
+
+ssh-keygen
+enter phases
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub
 
 
-ssh -i "mumbai-08092021.pem" ec2-user@ec2-15-206-117-185.ap-south-1.compute.amazonaws.com
+---------------jenkins---------2.346.1 maven 3.1.1
+
+amazon-linux-extras install epel -y
+
+yum update -y
+
+wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+sudo amazon-linux-extras install java-openjdk11
+
+yum install jenkins –y
+
+systemctl start jenkins
 
 
-Installing ansible:
+Multiple jobs -- stream job or queue job,  remotely job,         schedule job
+                   one by one                any where to line    particular time to run
+http://13.127.13.83:8080//job/dev/build?token=mytoken
 
-1. create ec2 server(4)
-2. install via user data
+user configuration
+manager jenkins-> manager users- create user, 
+security -> configure global security->authorization->select->role base authorsation->save
+                                          |
+                                       install manage plugins->avaiable->role base->install wihtout restart
+security->manage and assign roles->manage roles to create->role to add->employee->read permission
+                                                             |
+                                                            role to add->developer, patten->dev.*->add many role to add->item role permision your job full permission
+save manage role
 
-#! /bin/bash
-yum install python-pip -y  
+assin roles  user/group
+choose employee 
+item roles  user/group
+save
 
+manager role ->employee to read to permission
+
+
+jenkins var/lib/jenkins default path
+
+creating tomcat username and password paste in /opt/apache-tomcat-8.5.75/conf nano tomcat-user.xml
+
+ <role rolename="manager-script"/>
+    <role rolename="manager-jmx"/>
+    <role rolename="manager-gui"/>
+    <role rolename="manager-status"/>
+    <user username="admin" password="admin" roles="manager-gui,manager-jmx,manager-status,manager-script"/>
+    <user username="deployer" password="deployer" roles="manager-script"/>
+
+
+ssh connection
+id_rsa.pub  copy in ssh folder public key
+id_rsa      copy pen file in local private key
+
+git 
+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 -sureshwaran06
+
+git ---> genkins
+settings->deploy keys-> webhooks -> Pay role connection http://3.110.171.159:8080/github-webhook/
+
+content type -> application/json
+
+create the job jenkins in webhook link with git
+
+
+---------Ansible-----------addon,playbook,role,advance   Ansible 2.4.2 latest -2.9.23     Python 2.7.18
+without pip to install ansible
+yum update and ansible install
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+configuration
+
+useradd ansadmin----------and also slave machine same user and password
+passwd ansadmin
+new password
+visudo
+#includedir /etc/sudoers.#d
+ec2-user	ALL=(ALL)	NOPASSWD: ALL
+ansadmin	ALL=(ALL)	NOPASSWD: ALL
+
+Master node
+
+cd /etc/ssh/ --- 
+vi ssh_config 
+ IdentityFile ~/.ssh/id_dsa  /Password
+remove # password authortication yes  
+
+vi sshd_config
+2 time insert 
+
+# remover password authentication yes
+
+#PermitRootLogin yes
+/Password
+
+#GSSAPIKeyExchange no
+/Password  
+
+service sshd restart
+
+Slave node
+vi /etc/ssh/sshd_config ----
+# remover password authentication yes
+
+#PermitRootLogin yes
+/Password
+
+service sshd restart
+
+Master node login duplicate
+login ansadmin
+Password
+ssh-keygen
+ls -l
+cd .ssh  ----public key private key generted
+ssh-copy-id (slave node id)
+Password
+ssh slave node password
+
+Slave node
+ifconfig -a
+
+----Ansble simple commands------
+Rebooting - ansible all -a "/sbin/reboot"
+copyfile - ansible all -m copy -a "src=/home dest=/"
+create user - ansible all -m user -a "name= password=<>"
+ansible -s all -m yum -a "name=httpd state=latest"
+
+
+===============with pip to install ansible--------------
+Change port in slave machine to copy the server.xml
+using ssh /usr/local/bin/apache-tomcat-9.0.63/conf/
+cp server.xml /tmp/
+permission to change other 
+chmod 777 server.xml
+java kill to stop
+ps -ef | grep java root id
+sudo kill -9 (root id)
+master machine
+scp ec2-user@ip-address slave machine:/tmp/server.xml .
+                source   			      description
+
+nano server.xml to change parameter "{{tomcat_port}}"
+
+jinja template format to change
+mv server.xml server.xml.j2
+
+
+
+
+encryted file 
+ansible-vault encrpt (file name)
+set password
+
+encryted file view 
+ansible-vault view (file name)
+ansible-vault edit (file name)
+
+To run
+ansible-playbook -i invent.txt filename --ask-vault-pass
+
+
+
+--------Docker----------- micro service to latch small light weight process 20.10.13
+Reprostry update ubundu
+root machine
+apt-get update -y
+
+Install docker engine
+
+apt-get install docker.io -y
+
+to find image
+docker images
+
+image to find
+docker ps 
+      process state
+
+docker ps -a
+          all stop to see
+
+create container run
+
+docker run -itd --name (container name) -p "9090:80" httpd image name
+            input mode, termainal, detacted mode
+
+enter to the conainer
+
+docker exec -it container name or id first 2 letter /bin/bash
+
+Container stop to remove
+
+docker container prune
+
+image to remove 
+
+docker rmi -f image id
+
+how to find os version details
+
+cat /etc/os-release
+
+to copy container to copy the image
+
+docker commit image id create image name and version also :
+
+to save the image in any path
+
+docker save -o /root/filename.tar image name and version
+
+file to image to load any path
+
+docker load -i filename.tar
+
+to push the image docker hub to storage image
+
+docker login
+
+docker tag imagename / resportory docker hub
+
+To write Dockerfile --- FROM RUN
+
+docker build -t filename .
+
+light wegiht os 5 MB ------ mint, alpin os
+
+
+Dockerfile commands ->	 FROM,RUN , WORKDIR, COPY, ADD, ENV, EXPOSE, CMD, ENTRYPOINT
+
+
+Create volume to sigh  to the local path
+
+-----------Volume and container to access to outside ----------------
+cd /opt/
+mkdir www
+cd www
+nano index.html
+docker run -itd --name volumeconcept -p "2020:80" -v "/opt/www:/usr/local/apache2/htdocs" httpd
+
+docker exec -it ea5 /bin/bash
+htdocs
+mkdir newdir newdir1
+touch myfile myfile1
+cd opt/www/
+
+container outside to access
+sudo su -
+mkdir sshdir
+cd sshdir/
+nano Dockerfile
+
+FROM ubuntu:16.04
+MAINTAINER suresh
+RUN apt-get update
+RUN apt-get install openssh-server -y
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN echo 'root:welcome' | chpasswd
+RUN mkdir /var/run/sshd
+CMD ["/usr/sbin/sshd", "-D"]
  
-pip install ansible
 
-(pip is python package manager)
+docker build -t sshimage .
+docker run -itd --name sshcont -p "2222:22" sshimage
+using puttgen portnumber 2222 to access to container
 
+Volume and container access:
+docker run -itd -p "8055:80" --name container1 -v "/usr/local/apache2/logs" httpd
 
--------------
+docker run -itd -p "2223:22" --name container2 --volumes-from container1:ro sshimage
 
-putty
-puttygen
-pageant (windows only)
-visual studio code
+--------------
 
-login into another ec2 machine via ssh:
-ssh ec2-user@public ip
+Terraform installation offical websit
 
+comment also install
 
-Two important files: create two file in master machine as ec2-user not in root user)
-1. Inventory file     - /etc/ansible/hosts       - slave (private ip's)
-2. configuration file - /etc/ansible/ansible.cfg - ansible configuration details
-   
- (https://raw.githubusercontent.com/ansible/ansible/stable-2.11/examples/ansible.cfg)
- (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+zip file also install wget
+unzip
+path mv terraform /usr/local/bin/
 
+nano infra.tf
 
-ssh -i "10amsession.pem" ec2-user@ec2-3-110-47-118.ap-south-1.compute.amazonaws.com
+Terraform 3 command
+terraform init
+terraform plan
+terraform apply
 
-ssh ec2-user@3.110.104.86
-
-----------------------------------------------------------------------
-4 topics:
-
-1. ad hoc commands
-2. playbooks
-3. deployment 
-4. Roles
-5. vault
-
------------------------
-adhoc commands:
--ad hoc commands are great for tasks you repeat rarely
--ad hoc tasks can be used to reboot servers, copy files, 
- manage packages and users, and much more. 
--You can use any Ansible module in an adhoc task
---------------------------------------------------------------
-1.ping command: 
-#ansible all -i inventory.txt -m ping  
----------------------------
-host_key_checking = False
----------------------------
-
-2.know the OS
-#ansible all -i invent.txt -a "uname -a"
-
-3.know the OS starting time
-#ansible all -i slaves.txt -a "uptime"
-
-4.know the file system
-#ansible all -i slaves.txt -a "df -h"
-
-5.Grouping:
-#ansible greens -i slaves.txt -m ping
-
-6.Installing appache
-state:
-------
-install - > present / latest
-uninstall --> absent 
-start --> started
-stop --> stoped
-restart --> restarted
+https://jhooq.com/terraform-ssh-into-aws-ec2/
+https://github.com/miztiik/AWS-Demos/tree/master/How-To/setup-s3-event-sns-notification
+https://www.ipaddressguide.com/cidr
+https://docs.ansible.com/ansible/2.9/modules/yum_module.html#yum-module
+https://registry.terraform.io/
+https://qiita.com/leechungkyu/items/86cad0396cf95b3b6973
 
 
-
-yum install httpd -y
-service httpd start
-
-#ansible all -i slave.txt -m yum -a "name=httpd state=present"
-#ansible all -i invent.txt -m yum -a "name=httpd state=present" -b  (with permission)
-
-start the service:
-ansible all -i invent.txt -m service -a "name=httpd state=started" -b
-
-unstalling appache
-#ansible greens -i slaves.txt -m yum -a "name=httpd state=absent" -b
-"msg": "Failed to connect to the host via ssh: Permission denied (publickey,gssapi-keyex,gssapi-with-mic)."
-
-7.adding user 
-#ansible all -i slaves.txt -m user -a "name=mani password=welcome1234" -b
-
-8.copying the fi/honle
-#ansible all -i slave.txt -m copy -a "src=./slave.txt dest=/tmp/slave.txt"
-
-9.to know the port number
-#ansible greens -i slave.txt -a "grep -i JENKINS_PORT /etc/sysconfig/jenkins" -b
-
-10. to change the port number in play-book
-#ansible-playbook -i slave.txt handler.yaml -e "ports=9091"
-
-ssh -i "mumbai-08092021.pem" ec2-user@ec2-13-126-44-72.ap-south-1.compute.amazonaws.com
-
---------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------------------
-                                     ad hoc commands
-                                     ===============
-                                    
-Where 
--m = Module name
--a = allow parameters
--u = username
-
-
-ansible 127.0.0.1 -m file -a "dest=/opt/a.txt mode=600 state=touch"
-ansible 127.0.0.1 -m file -a "dest=/opt/a.txt mode=600 state=touch"
-ansible 127.0.0.1 -m file -a "dest=/opt/a.txt mode=600 state=touch owner=ec2-user"
-ansible 127.0.0.1 -m file -a "dest=/opt/b.txt mode=755 state=touch owner=ec2-user"
-ansible 127.0.0.1 -m file -a "dest=/opt/c.txt mode=755 state=touch owner=ec2-user"
-ansible 127.0.0.1 -m file -a "dest=/opt/bmc.txt mode=755 owner=ec2-user"
-
-ansible localhost -m file -a "dest=/opt/bmcdir mode=755 owner=ec2-user group=ec2-user state=directory"
-
-ansible 127.0.0.1 -m yum -a "name=httpd state=present"
-ansible 127.0.0.1 -m yum -a "name=httpd state=absent"
-
-ansible all -m service -a "name=httpd state=started"
-ansible 127.0.0.1 -m service -a "name=httpd state=stopped"
-
-ansible 127.0.0.1 -m command -a "/bin/yum update -y"
-ansible 127.0.0.1 -a "/bin/yum update -y"
-
-ansible 127.0.0.1 -m copy -a "src=/opt/index.html dest=/var/www/html/index.html"
-
-ansible 127.0.0.1 -m setup
-
-# Commands used in Hands-On-Ansible Mod5 Exercise 1
-
-# Install Apache
-$ ansible webservers -i inventory -m yum -a "name=httpd state=present" -b
-
-# Start Apache
-$ ansible webservers -i inventory -m service -a "name=httpd enabled=yes state=started" -b
-
-# Install MySQL
-$ ansible dbservers -i inventory -m yum -a "name=mysql-server state=present" -b
-
-# Start MySQL
-$ ansible dbservers -i inventory -m service -a "name=mysqld enabled=yes state=started" -b
-
-# Stop IPTables on all systems
-$ ansible webservers:dbservers -i inventory -m service -a "name=iptables enabled=no state=stopped" -b
-
-$ ansible servers -a "/sbin/reboot" 
-
-$ ansible all -m user -a "name=foo password="
-
-$ ansible webservers -m git -a "repo=https://foo.example.org/repo.git dest=/srv/myapp version=HEAD"
-
-$ ansible all -m user -a "name=foo state=absent"
-
----------------------------------------------------------------------------------------------------------------
-
-Task:
-1. Install ansible in ubuntu without pip
-issues faced in ansible(interview questions)
-
-Before you install Ansible on Ubuntu, make sure you have a couple of things set up. The configuration requires an Ansible control node and one or more Ansible hosts. Note: The Ansible control node gives you control over Ansible hosts. It can be a dedicated server or a local machine with Ubuntu 20.04 installed.
-
-2. like pageant what you use in other linux based OS
-
-3. adhoc command without -i
-
-4. adhoc commands for file,directory 
-
-5. how to use ansible in windows environment.
-Download the Cygwin installation file. ...
-Run the Cygwin installation file. ...
-Select Install from Internet as the download source and click Next.
-In the Root Directory field, specify where you want the application installed, then click Next.
-
-
-6. status check of apache
 
 
 
